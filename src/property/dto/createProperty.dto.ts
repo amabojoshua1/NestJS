@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
 import { IsString, IsNumber, Length, IsPositive } from 'class-validator';
 
 export class CreatePropertyDto {
@@ -10,9 +9,9 @@ export class CreatePropertyDto {
   @IsString()
   description: string;
 
-  @IsNumber()
-  @IsPositive()
-  area: number;
+  // @IsNumber()
+  // @IsPositive()
+  // area: number;
 
   @IsNumber()
   @IsPositive()
@@ -20,4 +19,8 @@ export class CreatePropertyDto {
 
   @IsString()
   address: string;
+
+  // @IsNumber()
+  // @IsPositive()
+  // ownerId: number;
 }

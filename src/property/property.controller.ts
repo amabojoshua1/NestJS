@@ -40,8 +40,8 @@ export class PropertyController {
   @Post()
   @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }))
   // @HttpCode(202)
-  create(@Body() body: CreatePropertyDto) {
-    return this.propertyService.create();
+  create(@Body() dto: CreatePropertyDto) {
+    return this.propertyService.create(dto);
   }
 
   // This module is used to update given property details
