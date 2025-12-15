@@ -5,38 +5,37 @@ import {
   Post,
   Param,
   Body,
-  // HttpCode,
-  // ParseIntPipe,
-  ParseBoolPipe,
-  Query,
   ValidationPipe,
   UsePipes,
   Patch,
+  Delete,
 } from '@nestjs/common';
 import { CreatePropertyDto } from './dto/createProperty.dto';
 import { IdParamDto } from './dto/idParam.dt';
 import { PropertyService } from './property.service';
+import { ParseIdPipe } from './pipes/parseIdPipes';
+import { UpdatePropertyDto } from './dto/updateProperty.dto';
 
 @Controller('property')
 export class PropertyController {
   constructor(private propertyService: PropertyService) {}
-  // This module is used to get all properties
+  // This controller is used to get all properties
   @Get('all')
   findAll() {
     return this.propertyService.findAll();
   }
 
-  // This module is used to get a property by its id
+  // This controller is used to get a property by its id
   @Get(':id')
   findOne(
     @Param() { id }: IdParamDto,
-    @Query('sort', ParseBoolPipe) sort: boolean,
+    // @Query('sort', ParseBoolPipe) sort: boolean,
   ) {
-    console.log(typeof sort);
-    return this.propertyService.findOne();
+    // console.log(typeof sort);
+    return this.propertyService.findOne(id);
   }
 
-  // This module is used to create a new property
+  // This controller is used to create a new property
   @Post()
   @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }))
   // @HttpCode(202)
@@ -44,7 +43,7 @@ export class PropertyController {
     return this.propertyService.create(dto);
   }
 
-  // This module is used to update given property details
+  // This controller is used to update given property details
   @Patch(':id')
   @UsePipes(
     new ValidationPipe({
@@ -54,7 +53,18 @@ export class PropertyController {
       always: true,
     }),
   )
-  update(@Param() { id }: IdParamDto, @Body() body: CreatePropertyDto) {
-    return this.propertyService.update();
+
+  // Below is the first method to use for id, Below that is the second - creating and id cleaner pipe
+  // update(@Param() { id }: IdParamDto, @Body() body: UpdatePropertyDto) {
+  update(@Param('id', ParseIdPipe) id, @Body() body: UpdatePropertyDto) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    return this.propertyService.update(id, body);
+  }
+
+  // This controller deletes a created property
+  @Delete(':id')
+  delete(@Param('id', ParseIdPipe) id) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    return this.propertyService.delete(id);
   }
 }
