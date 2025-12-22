@@ -57,14 +57,14 @@ export class PropertyController {
   // Below is the first method to use for id, Below that is the second - creating and id cleaner pipe
   // update(@Param() { id }: IdParamDto, @Body() body: UpdatePropertyDto) {
   update(@Param('id', ParseIdPipe) id, @Body() body: UpdatePropertyDto) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    // eslintdisable-next-line @typescript-eslint/no-unsafe-argument
     return this.propertyService.update(id, body);
   }
 
   // This controller deletes a created property
   @Delete(':id')
   delete(@Param('id', ParseIdPipe) id) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     return this.propertyService.delete(id);
   }
 }
