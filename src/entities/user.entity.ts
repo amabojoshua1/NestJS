@@ -24,8 +24,8 @@ export class User {
   @Column({ unique: true })
   email: string;
 
-  @Column()
-  avatarUrl: string;
+  @Column({ default: 'https://example.com/default-avatar.png' })
+  avatarUrl?: string;
 
   @CreateDateColumn()
   createdAt: Date;

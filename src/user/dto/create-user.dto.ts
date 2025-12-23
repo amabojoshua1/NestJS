@@ -1,5 +1,9 @@
 import { IsEmail, IsOptional, IsString } from 'class-validator';
 
+/**
+ * Data Transfer Object for creating a new user.
+ * Includes validation rules for each property.
+ */
 export class CreateUserDto {
   // DTO for creating a new user
   @IsString()

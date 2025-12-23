@@ -7,8 +7,9 @@ export class AuthService {
   constructor(private userService: UserService) {}
 
   //   Validate user credentials
+  // the goal is to return user data if valid, or throw an error if not
   async validateUser(email: string, password: string): Promise<any> {
-    // Find user by email
+    // Find user by emails
     const user = await this.userService.findByEmail(email);
     if (!user) throw new UnauthorizedException('User not found');
 

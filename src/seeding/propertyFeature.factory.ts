@@ -1,5 +1,11 @@
 import { setSeederFactory } from 'typeorm-extension';
 import { PropertyFeature } from 'src/entities/propertyFeature.entity';
+
+/**
+ * Factory for generating PropertyFeature entities
+ * Utilizes faker to create realistic sample data for property features.
+ * Each feature includes area, number of bathrooms, bedrooms, parking spots, and boolean flags for balcony, garden, and swimming pool.
+ */
 export const PropertyFeatureFactory = setSeederFactory(
   PropertyFeature,
   (faker) => {
