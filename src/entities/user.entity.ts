@@ -11,6 +11,9 @@ import {
 import { Property } from './property.entity';
 import * as bcrypt from 'bcrypt';
 @Entity()
+/** User entity
+ * Represents a user in the system with properties, liked properties, and authentication details.
+ */
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
