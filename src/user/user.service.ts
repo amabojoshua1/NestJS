@@ -14,6 +14,12 @@ export class UserService {
   /**
    *
    * @param UserRepo
+   * What happens here is the injection of the User repository.
+   * This allows the service to interact with the User entity in the database.
+   * The process includes:
+   * 1. Using the @InjectRepository decorator to inject the User repository.
+   * 2. Storing the injected repository in a private member called UserRepo of type Repository<User> for use in other methods.
+   * This setup is essential for performing database operations related to users within the service.
    */
   constructor(@InjectRepository(User) private UserRepo: Repository<User>) {}
 
@@ -23,20 +29,30 @@ export class UserService {
    * @returns The created user entity
    * This method creates a new user in the database using the provided data transfer object (DTO).
    * It utilizes the User repository to create and save the new user entity.
+   * The process includes:
+   * 1. Creating a new user entity from the DTO.
+   * 2. Saving the new user entity to the database.
+   * 3. Returning the saved user entity.
+   * In a real application, consider adding error handling and validation here.
+   * For example, you might want to check if a user with the same email already exists before creating a new one.
+   * You might also want to hash the user's password before saving it to the database for security reasons.
+   * These enhancements help ensure data integrity and security in user management.
    */
   async create(createUserDto: CreateUserDto) {
     const newUser = this.UserRepo.create(createUserDto);
     return await this.UserRepo.save(newUser);
   }
 
+  // Used in AuthService to validate user by email
   /**
-   *
-   * @param email corresponds to email to be searched
-   * @returns results of the search
-   * This method searches and finds email for a given user.
-   * It returns it if it exist
+   * @param email This is the email of the user to be verified
+   * @returns The user data corresponding to that email.
+   * This async method defines the logic for how users can be found base on their email addresses.
+   * It does this by:
+   * 1. Using the User repository to search for a user entity where the email matches the provided email.
+   * 2. Returning the found user entity or null if no user is found.
+   * This method is essential for authentication processes where user identification by email is required such as when using jwt strategy.
    */
-  // Find user by email
   async findByEmail(email: string) {
     return await this.UserRepo.findOne({ where: { email } });
   }
