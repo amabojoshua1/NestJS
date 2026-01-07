@@ -5,6 +5,9 @@ import { MainSeeder } from './main.seeder';
 
 const options: DataSourceOptions & SeederOptions = {
   ...pgConfig,
+  type: 'postgres',
+  // You can use glob patterns to specify multiple factories and seeders
+  //
   factories: ['src/seeding/**/*.factory.ts'],
   //   seeds: ['src/seeding/**/*.seeder.ts'],
   // Or you can specify the seeders directly

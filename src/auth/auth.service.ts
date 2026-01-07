@@ -1,4 +1,6 @@
+/* eslint-disable @typescript-eslint/require-await */
 import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import { compare } from 'bcrypt';
 import { UserService } from 'src/user/user.service';
 
@@ -22,7 +24,10 @@ import { UserService } from 'src/user/user.service';
  */
 @Injectable()
 export class AuthService {
-  constructor(private userService: UserService) {}
+  constructor(
+    private userService: UserService,
+    private jwtService: JwtService,
+  ) {}
 
   //   Validate user credentials
   // the goal is to return user data if valid, or throw an error if not
@@ -63,6 +68,13 @@ export class AuthService {
      * This approach enhances security and user session management.
      * Make sure to import JwtService from '@nestjs/jwt' when implementing JWT generation.
      */
-    return { id: user.id };
+    return { id: user.id, email: user.email };
+  }
+
+  async login(user: any) {
+    const payload = { email: user.email, sub: user.id };
+    return {
+      access_token: this.jwtService.sign(payload),
+    };
   }
 }

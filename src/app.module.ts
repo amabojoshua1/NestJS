@@ -47,7 +47,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
      */
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
-      useFactory: (configService: ConfigModule) => {
+      useFactory: (configService: ConfigService) => {
         return pgConfig(configService);
       },
       inject: [ConfigService],

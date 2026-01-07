@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Module } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
@@ -39,7 +40,8 @@ import { JwtStrategy } from './strategies/jwt.strategy'; // Don't forget your st
           secret: configService.getOrThrow<string>('JWT_SECRET'),
           signOptions: {
             // Get expiration from env, or default to '1d' if missing
-            expiresIn: configService.get<string>('JWT_EXPIRE_IN') || '1d',
+            expiresIn: (configService.get<string>('JWT_EXPIRE_IN') ||
+              '1d') as any,
           },
         };
       },

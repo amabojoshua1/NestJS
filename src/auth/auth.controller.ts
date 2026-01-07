@@ -1,6 +1,8 @@
-import { Controller, Post, Request, UseGuards } from '@nestjs/common';
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+import { Controller, Post, Request, UseGuards, Res } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LocalAuthGuard } from './guards/local-auth/local-auth.guard';
+import type { Response } from 'express';
 
 @Controller('auth')
 export class AuthController {
@@ -28,9 +30,15 @@ export class AuthController {
    */
   @UseGuards(LocalAuthGuard)
   @Post('login')
-  async login(@Request() req) {
+  async login(@Request() req, @Res({ passthrough: true }) response: Response) {
     // The authenticated user is attached to req.user by the AuthGuard
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access
-    return await req.user; // Return the authenticated user data
+    // These lines performs the following:
+    // 1. Calls the login method of AuthService with req.user
+    // 2. Awaits the result, which is expected to be a token object
+    // 3. Sets the Authorization header in the response with the Bearer token
+    // 4. Returns a success message indicating that login was successful
+    const tokenObject = await this.authService.login(req.user);
+    response.set('Authorization', `Bearer ${tokenObject.access_token}`);
+    return { message: 'Login successful' }; // Return the authenticated user data
   }
 }
