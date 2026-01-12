@@ -1,11 +1,11 @@
-import { IsString, IsNumber, Length, IsPositive } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
+import { IsString, IsNumber, IsPositive } from 'class-validator';
 
 export class CreatePropertyDto {
+  @ApiProperty({
+    example: 'Spacious 2-bedroom apartment in downtown',
+  })
   @IsString()
-  @Length(2, 20, { groups: ['create'] })
-  @Length(2, 25, { groups: ['update'] })
-  name: string;
-
   @IsString()
   description: string;
 
@@ -13,6 +13,9 @@ export class CreatePropertyDto {
   // @IsPositive()
   // area: number;
 
+  @ApiProperty({
+    example: 100000,
+  })
   @IsNumber()
   @IsPositive()
   price: number;

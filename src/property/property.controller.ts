@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   Controller,
   Get,
@@ -11,10 +10,11 @@ import {
   Delete,
 } from '@nestjs/common';
 import { CreatePropertyDto } from './dto/createProperty.dto';
-import { IdParamDto } from './dto/idParam.dt';
+import { IdParamDto } from './dto/idParam.dto';
 import { PropertyService } from './property.service';
 import { ParseIdPipe } from './pipes/parseIdPipes';
 import { UpdatePropertyDto } from './dto/updateProperty.dto';
+import { ApiParam } from '@nestjs/swagger';
 
 @Controller('property')
 export class PropertyController {
@@ -27,6 +27,12 @@ export class PropertyController {
 
   // This controller is used to get a property by its id
   @Get(':id')
+  @ApiParam({
+    name: 'id',
+    description: 'The ID of the property to retrieve',
+    required: true,
+    schema: { type: 'integer' },
+  })
   findOne(
     @Param() { id }: IdParamDto,
     // @Query('sort', ParseBoolPipe) sort: boolean,
@@ -45,6 +51,12 @@ export class PropertyController {
 
   // This controller is used to update given property details
   @Patch(':id')
+  // ApiParam({
+  //   name: 'id',
+  //   description: 'The ID of the property to update',
+  //   required: true,
+  //   schema: { type: 'integer' },
+  // })
   @UsePipes(
     new ValidationPipe({
       whitelist: true,
@@ -58,6 +70,7 @@ export class PropertyController {
   // update(@Param() { id }: IdParamDto, @Body() body: UpdatePropertyDto) {
   update(@Param('id', ParseIdPipe) id, @Body() body: UpdatePropertyDto) {
     // eslintdisable-next-line @typescript-eslint/no-unsafe-argument
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     return this.propertyService.update(id, body);
   }
 

@@ -3,7 +3,10 @@ import { Controller, Post, Request, UseGuards, Res } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LocalAuthGuard } from './guards/local-auth/local-auth.guard';
 import type { Response } from 'express';
+import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { LoginDto } from './dto/auth.Login.dto';
 
+@ApiTags('auth')
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
@@ -30,6 +33,38 @@ export class AuthController {
    */
   @UseGuards(LocalAuthGuard)
   @Post('login')
+  /**
+   * @ApiBody is used to define the expected structure of the request body for this endpoint
+   * It helps in generating accurate API documentation and enables request validation
+   * Here, we specify that the request body should conform to the LoginDto class
+   * This provides details about the required fields (e.g., email and password) and their types
+   * In this case the details are taken from the LoginDto class defined in auth.Login.dto.ts
+   * This enhances the Swagger documentation by clearly indicating what the client should send in the request body
+   * It also allows tools that generate client code from the Swagger spec to create appropriate data structures for requests
+   * @ApiOperation is used to add metadata about this operation for API documentation purposes
+   * It provides a summary and description of what this endpoint does
+   * This information is displayed in the Swagger UI, helping developers understand the purpose of the endpoint
+   * Here, we specify that this operation is for "User login" and it "Authenticate user and return JWT"
+   * This enhances the generated API documentation by providing context about the endpoint's functionality
+   * It helps consumers of the API quickly grasp what this endpoint is used for
+   * @ApiParam can be used to document path parameters for the endpoint
+   * However, in this case, there are no path parameters for the /auth/login endpoint
+   * So this decorator is commented out
+   * If there were path parameters, we would use @ApiParam to describe each parameter's name, description, requirement status, and schema
+   */
+  @ApiBody({
+    type: LoginDto,
+  })
+  @ApiOperation({
+    summary: 'User login',
+    description: 'Authenticate user and return JWT',
+  })
+  // @ApiParam({
+  //   name: 'name',
+  //   description: 'description',
+  //   required: true,
+  //   schema: schema
+  // })
   async login(@Request() req, @Res({ passthrough: true }) response: Response) {
     // The authenticated user is attached to req.user by the AuthGuard
     // These lines performs the following:
